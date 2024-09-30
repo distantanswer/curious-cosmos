@@ -6,6 +6,8 @@ function App() {
   // Use state to store the video URLs
   const [firstVideoUrl, setFirstVideoUrl] = useState("");
   const [secondVideoUrl, setSecondVideoUrl] = useState("");
+  const [firstVideoTimestamp, setFirstVideoTimestamp] = useState(0.00);
+
 
   // Function to extract the video ID from a full YouTube URL
   const extractVideoId = (url) => {
@@ -13,6 +15,10 @@ function App() {
     const match = url.match(regex);
     return match ? match[1] : "";
   };
+
+  const setTimestamps = () => {
+    setFirstVideoTimestamp(100);
+  }
 
   return (
     <div className="App">
@@ -34,9 +40,11 @@ function App() {
       
       {/* Embed components for both videos */}
       <div className="video-container">
-        <YoutubeEmbed embedId={firstVideoUrl} />
+        <YoutubeEmbed embedId={firstVideoUrl} timestamp={firstVideoTimestamp} />
         <YoutubeEmbed embedId={secondVideoUrl} />
       </div>
+
+      <button onClick={setTimestamps}>Set Time</button>
     </div>
   );
 }
