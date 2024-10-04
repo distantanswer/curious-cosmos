@@ -1,22 +1,25 @@
 {
+  "projects": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/build"
+      }
+    },
+    {
+      "src": "backend/index.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/index.py"
+      "dest": "/backend/index.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
-  "builds": [
-    {
-      "src": "server/index.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build"
+      "dest": "/frontend/$1"
     }
   ]
 }
