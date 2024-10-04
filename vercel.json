@@ -1,5 +1,6 @@
 {
-  "projects": [
+  "version": 2,
+  "builds": [
     {
       "src": "frontend/package.json",
       "use": "@vercel/static-build",
@@ -8,7 +9,7 @@
       }
     },
     {
-      "src": "backend/index.py",
+      "src": "backend/**/*.py",
       "use": "@vercel/python"
     }
   ],
@@ -23,4 +24,3 @@
     }
   ]
 }
-
