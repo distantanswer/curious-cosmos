@@ -28,3 +28,4 @@ yarn-error.log*
 .env.build
 .vercel
 frontend/build
+venv
