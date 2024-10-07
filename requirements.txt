@@ -1,1 +1,2 @@
 Flask
+git+ssh://github.com/cgallarno/TranscriptAnalyzer.git
