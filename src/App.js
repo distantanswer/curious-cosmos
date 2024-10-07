@@ -1,4 +1,4 @@
-import { useState } from 'react'; // Import useState hook
+import { useState, useEffect } from 'react'; // Import useState hook
 import './App.css';
 import YoutubeEmbed from "./components/YoutubeEmbed.js"; // Import the YoutubeEmbed component
 
@@ -8,6 +8,22 @@ function App() {
   const [secondVideoUrl, setSecondVideoUrl] = useState("");
   const [firstVideoTimestamp, setFirstVideoTimestamp] = useState(0.00);
 
+  useEffect(() => {
+    if(firstVideoUrl.length && secondVideoUrl.length){
+      const eventSource = new EventSource(`http://localhost:8000/transcripts/common?videoIds=${firstVideoUrl}&videoIds=${secondVideoUrl}`);
+
+      eventSource.onmessage = function(event) {
+        const chunk = JSON.parse(event.data);
+        console.log("Received chunk:", chunk);
+        // Process the chunk as needed
+      };
+
+      eventSource.onerror = function(error) {
+        console.error("Error:", error);
+        eventSource.close();
+      };
+    }
+  }, [firstVideoUrl, secondVideoUrl]);
 
   // Function to extract the video ID from a full YouTube URL
   const extractVideoId = (url) => {
@@ -19,7 +35,20 @@ function App() {
   const setTimestamps = () => {
     setFirstVideoTimestamp(100);
   }
+/*
+  #  const eventSource = new EventSource('/api/transcripts/compare?videoId=gam8OM_7Wn8&videoId=VPZlLr3hkd4');
 
+eventSource.onmessage = function(event) {
+    const chunk = JSON.parse(event.data);
+    console.log("Received chunk:", chunk);
+    // Process the chunk as needed
+};
+
+eventSource.onerror = function(error) {
+    console.error("Error:", error);
+    eventSource.close();
+};
+*/
   return (
     <div className="App">
       <h1>Add your YouTube video URLs!</h1>
