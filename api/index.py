@@ -1,6 +1,4 @@
-from flask import Flask, request, jsonify, Response
-from transcript_analyzer import fetch_transcript, find_common_chunks
-import json
+from flask import Flask
 
 app = Flask(__name__)
 

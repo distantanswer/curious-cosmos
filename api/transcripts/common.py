@@ -1,3 +1,9 @@
+from flask import Flask, request, jsonify, Response
+from transcript_analyzer import fetch_transcript, find_common_chunks
+import json
+
+app = Flask(__name__)
+
 def stream_common_chunks(video_ids):
     for chunk in find_common_chunks(video_ids):
         yield f"data: {json.dumps(chunk)}\n\n"

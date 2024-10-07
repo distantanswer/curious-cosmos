@@ -1,3 +1,9 @@
+from flask import Flask, request, jsonify
+from transcript_analyzer import fetch_transcript, find_common_chunks
+import json
+
+app = Flask(__name__)
+
 @app.route('/api/transcripts/overlap')
 def check_transcripts_overlap():
     video_ids = request.args.getlist('videoIds')
