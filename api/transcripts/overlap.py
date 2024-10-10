@@ -1,16 +1,21 @@
-from flask import Flask, request, jsonify
+from flask import jsonify
 from transcript_analyzer import fetch_transcript, find_common_chunks
 import json
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
-app = Flask(__name__)
+has_yt_proxy = os.getenv("YT_TRANSCRIPT_PROXY_URL") != None
 
-@app.route('/api/transcripts/overlap')
-def check_transcripts_overlap():
+def handler(request):
     video_ids = request.args.getlist('videoIds')
     if len(video_ids) != 2:
         return jsonify({"message":"Only supports exactly two ids"}), 400
 
-    transcripts = fetch_transcript(video_ids)
+    try:
+        transcripts = fetch_transcript(video_ids)
+    except:
+        return jsonify({"message":"Error getting transcripts", "context": { "has_proxy": has_yt_proxy }}), 500
     identical_chunk_count = 0
     for chunk in find_common_chunks(transcripts, True):
         identical_chunk_count += 1
