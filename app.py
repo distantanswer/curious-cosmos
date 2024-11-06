@@ -12,11 +12,17 @@ def index():
 
 @app.route("/transcripts/common", methods=["GET"])
 def common():
-    return common_handler(request)
+    response, code = common_handler(request)
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3001")
+    return response, code
 
 @app.route("/transcripts/overlap", methods=["GET"])
 def overlap():
-    return overlap_handler(request)
+    response, code = overlap_handler(request)
+    print(response)
+    response.headers.add("Access-Control-Allow-Origin", "http://localhost:3001")
+
+    return response, code
 
 # Run the Flask app if this script is executed
 if __name__ == "__main__":

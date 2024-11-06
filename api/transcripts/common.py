@@ -17,4 +17,4 @@ def handler(request):
     transcripts = fetch_transcript(video_ids)
     print("Successfully fetched transcripts")
     
-    return Response(stream_common_chunks(transcripts), content_type='text/event-stream')
+    return Response(stream_common_chunks(transcripts), content_type='text/event-stream'), 200

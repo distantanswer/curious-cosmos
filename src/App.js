@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     if(firstVideoUrl.length && secondVideoUrl.length){
-      const eventSource = new EventSource(`http://localhost:8000/transcripts/common?videoIds=${firstVideoUrl}&videoIds=${secondVideoUrl}`);
+      const eventSource = new EventSource(`http://localhost:5000/transcripts/common?videoIds=${firstVideoUrl}&videoIds=${secondVideoUrl}`);
 
       eventSource.onmessage = function(event) {
         const chunk = JSON.parse(event.data);
@@ -34,6 +34,21 @@ function App() {
 
   const setTimestamps = () => {
     setFirstVideoTimestamp(100);
+  }
+
+  const checkVideosHaveOverlap = async () => {
+    const url = `http://localhost:5000/transcripts/overlap?videoIds=${secondVideoUrl}&videoIds=${firstVideoUrl}`
+    try {
+     const response = await fetch(url);
+     if (!response.ok) {
+       throw new Error(`Response status: ${response.status}`);
+     }
+
+     const json = await response.json();
+     console.log(json);
+    } catch (error) {
+     console.error(error.message);
+    }
   }
 /*
   #  const eventSource = new EventSource('/api/transcripts/compare?videoId=gam8OM_7Wn8&videoId=VPZlLr3hkd4');
@@ -66,6 +81,8 @@ eventSource.onerror = function(error) {
         placeholder="Enter second YouTube video URL"
         onChange={(e) => setSecondVideoUrl(extractVideoId(e.target.value))}
       />
+
+      <button onClick={checkVideosHaveOverlap}>Overlaps?</button>
       
       {/* Embed components for both videos */}
       <div className="video-container">

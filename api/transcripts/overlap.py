@@ -12,10 +12,15 @@ def handler(request):
     if len(video_ids) != 2:
         return jsonify({"message":"Only supports exactly two ids"}), 400
 
+    print('INSIDE OVERLAP')
+    print(video_ids)
     try:
         transcripts = fetch_transcript(video_ids)
+        print(transcripts)
+        if len(transcripts.keys()) < 2: raise Exception("Error getting transcripts")
     except:
         return jsonify({"message":"Error getting transcripts", "context": { "has_proxy": has_yt_proxy }}), 500
+
     identical_chunk_count = 0
     for chunk in find_common_chunks(transcripts, True):
         identical_chunk_count += 1
@@ -25,3 +30,4 @@ def handler(request):
     print(shorter_video_total_chunks)
     print(identical_chunk_count)
     return jsonify({"overlap": amount_overlap}), 200
+
